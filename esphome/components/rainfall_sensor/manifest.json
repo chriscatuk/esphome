@@ -1,0 +1,11 @@
+{
+  "name": "Rainfall Sensor",
+  "description": "A component for the DFRobot Gravity Rainfall Sensor.",
+  "version": "1.0.0",
+  "authors": ["chriscatuk"],
+  "homeassistant_domain": "rainfall_sensor",
+  "documentation": "https://github.com/chriscatuk/esphome/",
+  "requirements": [],
+  "dependencies": {}
+}
+
