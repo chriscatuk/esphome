@@ -1,22 +1,21 @@
 #pragma once
 
-#include "esphome.h"
 #include "esphome/core/component.h"
-#include "esphome/components/sensor/sensor.h"
 #include "esphome/components/uart/uart.h"
+#include "esphome/components/sensor/sensor.h"
 
-namespace esphome {
-namespace rainfall_sensor {
+namespace esphome
+{
+  namespace rainfall_sensor
+  {
 
-class RainfallSensor : public sensor::Sensor, public PollingComponent, public uart::UARTDevice {
- public:
-  void setup() override;
-  void update() override;
+    class RainfallSensor : public sensor::Sensor, public Component, public uart::UARTDevice
+    {
+    public:
+      void setup() override;
+      void loop() override;
+      void dump_config() override;
+    };
 
- protected:
-  float parse_rainfall_data(const std::string &data);
-};
-
-}  // namespace rainfall_sensor
-}  // namespace esphome
-
+  } // namespace rainfall_sensor
+} // namespace esphome

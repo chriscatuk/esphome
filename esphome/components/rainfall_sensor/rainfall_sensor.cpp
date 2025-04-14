@@ -1,26 +1,44 @@
-#include "esphome.h"
 #include "rainfall_sensor.h"
+#include "esphome/core/log.h"
 
-namespace esphome {
-namespace rainfall_sensor {
+namespace esphome
+{
+  namespace rainfall_sensor
+  {
 
-using namespace sensor;
+    static const char *const TAG = "rainfall_sensor";
 
-void RainfallSensor::setup() {
-  // Initialize sensor if needed
-}
+    void RainfallSensor::setup()
+    {
+      ESP_LOGCONFIG(TAG, "Setting up Rainfall Sensor...");
+      // Setup code here (if needed)
+    }
 
-void RainfallSensor::update() {
-  // Read data from the sensor
-  while (available()) {
-    std::string data = read_string();
-    // Parse the data according to the sensor's protocol
-    float rainfall_amount = parse_rainfall_data(data);
-    publish_state(rainfall_amount);
-  }
-}
+    void RainfallSensor::loop()
+    {
+      // Read UART input
+      while (this->available())
+      {
+        std::string line = this->read_line();
+        ESP_LOGD(TAG, "Received: %s", line.c_str());
 
-float RainfallSensor::parse_rainfall_data(const std::string &data) {
-  // Implement the parsing logic based on the sensor's documentation
-  // For example, if the data is in the format "RAIN
+        // Try to parse float from the received string
+        float value = atof(line.c_str());
 
+        // Optional: validate the value
+        if (value >= 0.0f && value < 1000.0f)
+        {
+          ESP_LOGI(TAG, "Rainfall: %.2f mm", value);
+          this->publish_state(value);
+        }
+      }
+    }
+
+    void RainfallSensor::dump_config()
+    {
+      LOG_SENSOR("", "Rainfall Sensor", this);
+      LOG_UPDATE_INTERVAL(this);
+    }
+
+  } // namespace rainfall_sensor
+} // namespace esphome
