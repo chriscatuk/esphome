@@ -10,34 +10,33 @@ namespace esphome
 
     void RainfallSensor::setup()
     {
-      ESP_LOGCONFIG(TAG, "Setting up Rainfall Sensor...");
-      // Setup code here (if needed)
+      ESP_LOGCONFIG(TAG, "Setting up DFRobot Rainfall Sensor (UART)...");
+      sensor_ = new DFRobot_RainfallSensor_UART(&this->parent_->stream());
+
+      if (sensor_->begin())
+      {
+        ESP_LOGI(TAG, "Rainfall sensor initialized successfully");
+      }
+      else
+      {
+        ESP_LOGE(TAG, "Failed to initialize rainfall sensor");
+      }
     }
 
     void RainfallSensor::loop()
     {
-      // Read UART input
-      while (this->available())
-      {
-        std::string line = this->read_line();
-        ESP_LOGD(TAG, "Received: %s", line.c_str());
+      if (!sensor_)
+        return;
 
-        // Try to parse float from the received string
-        float value = atof(line.c_str());
-
-        // Optional: validate the value
-        if (value >= 0.0f && value < 1000.0f)
-        {
-          ESP_LOGI(TAG, "Rainfall: %.2f mm", value);
-          this->publish_state(value);
-        }
-      }
+      // Get rainfall in mm
+      float rainfall = sensor_->getRainfall();
+      ESP_LOGD(TAG, "Rainfall measured: %.2f mm", rainfall);
+      this->publish_state(rainfall);
     }
 
     void RainfallSensor::dump_config()
     {
-      LOG_SENSOR("", "Rainfall Sensor", this);
-      LOG_UPDATE_INTERVAL(this);
+      LOG_SENSOR("", "DFRobot Rainfall Sensor", this);
     }
 
   } // namespace rainfall_sensor
