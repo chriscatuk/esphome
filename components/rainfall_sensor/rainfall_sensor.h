@@ -1,24 +1,34 @@
-#pragma once
+#include "esphome.h"
 
-#include "esphome/components/sensor/sensor.h"
-#include "esphome/components/uart/uart.h"
-#include "DFRobot_RainfallSensor.h" // Assuming it's placed in the same folder or included properly
-
-namespace esphome
+class RainfallSensor : public PollingComponent, public UARTDevice, public Sensor
 {
-  namespace rainfall_sensor
-  {
+public:
+    RainfallSensor(UARTComponent *parent) : UARTDevice(parent) {}
 
-    class RainfallSensor : public sensor::Sensor, public Component, public uart::UARTDevice
+    void setup() override
     {
-    public:
-      void setup() override;
-      void loop() override;
-      void dump_config() override;
+        // Nothing to initialise
+    }
 
-    protected:
-      DFRobot_RainfallSensor_UART *sensor_{nullptr};
-    };
+    void update() override
+    {
+        // Send the request command
+        this->write_str("GET+RAINFALL=1\r\n");
+    }
 
-  } // namespace rainfall_sensor
-} // namespace esphome
+    void loop() override
+    {
+        while (available())
+        {
+            std::string line = this->read_line();
+            int idx = line.find("+RAINFALL:");
+            if (idx != std::string::npos)
+            {
+                std::string val_str = line.substr(idx + 10);
+                val_str.erase(val_str.find("mm")); // remove 'mm'
+                float value = atof(val_str.c_str());
+                publish_state(value);
+            }
+        }
+    }
+};
