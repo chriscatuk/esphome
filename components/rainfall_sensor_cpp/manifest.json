@@ -1,0 +1,11 @@
+{
+  "domain": "rainfall_sensor",
+  "name": "Rainfall Sensor",
+  "dependencies": [
+    "uart"
+  ],
+  "codeowners": [
+    "@chriscatuk"
+  ],
+  "requirements": []
+}
