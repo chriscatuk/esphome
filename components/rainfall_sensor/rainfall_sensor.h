@@ -1,9 +1,7 @@
-#pragma once
-
 #include "esphome.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/uart/uart.h"
-#include "esphome/components/polling/polling.h"
+#include "esphome/components/update_interval/update_interval.h"
 
 namespace esphome
 {

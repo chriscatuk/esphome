@@ -1,17 +1,22 @@
 #include "esphome.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/uart/uart.h"
-#include "esphome/components/polling/polling.h"
+#include "esphome/components/update_interval/update_interval.h"
 
 namespace esphome
 {
     namespace rainfall_sensor
     {
 
-        class RainfallSensor : public PollingComponent, public UARTDevice, public Sensor
+        class RainfallSensor : public UpdateIntervalComponent, public UARTDevice, public Sensor
         {
         public:
             explicit RainfallSensor(UARTComponent *parent) : UARTDevice(parent) {}
+
+            void setup() override
+            {
+                // Perform any setup necessary (e.g., initialize UART, etc.)
+            }
 
             void update() override
             {
@@ -28,11 +33,6 @@ namespace esphome
                 }
 
                 this->publish_state(rainfall_value);
-            }
-
-            void publish_state(float value)
-            {
-                Sensor::publish_state(value);
             }
 
             std::string read_line()
