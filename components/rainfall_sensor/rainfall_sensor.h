@@ -10,22 +10,25 @@ namespace esphome
         class RainfallSensor : public PollingComponent, public UARTDevice, public Sensor
         {
         public:
+            // Constructor to initialize UART parent
             RainfallSensor(UARTComponent *parent) : UARTDevice(parent) {}
 
+            // Setup method to initialize components
             void setup() override
             {
-                // Initialize hardware and UART setup
+                // Initialization code, if needed
             }
 
+            // Method to update sensor readings (called periodically)
             void update() override
             {
-                // Fetch data from the sensor via UART and process it
+                // Example: reading a line of data from UART
                 std::string line = this->read_line();
-                if (line.length() > 0)
+                if (!line.empty())
                 {
-                    // Parse the value (this is an example, adjust it to your sensor's data)
-                    float value = std::stof(line);
-                    this->publish_state(value); // Send the data to ESPHome
+                    // Parse the line to extract the rainfall value (adjust based on your data format)
+                    float value = std::stof(line); // Adjust parsing as needed
+                    this->publish_state(value);    // Send the value to ESPHome
                 }
             }
         };

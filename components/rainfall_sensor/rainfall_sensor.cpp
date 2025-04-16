@@ -5,17 +5,26 @@ namespace esphome
     namespace rainfall_sensor
     {
 
-        // Define your methods here, like reading UART data, etc.
+        // Constructor implementation (if needed)
+        RainfallSensor::RainfallSensor(UARTComponent *parent) : UARTDevice(parent) {}
 
-        // If `read_line()` is not available in the base class, you can implement it here.
-        // For example:
-        std::string RainfallSensor::read_line()
+        // Setup function (already defined in the header)
+        void RainfallSensor::setup()
         {
-            // Implement reading a full line from the UART stream
-            char buffer[256];                                                                           // Set a buffer size
-            int len = this->uart_read_bytes(reinterpret_cast<uint8_t *>(buffer), sizeof(buffer), 1000); // Read bytes
-            buffer[len] = '\0';                                                                         // Null terminate string
-            return std::string(buffer);                                                                 // Convert the buffer to string
+            // Setup code for the sensor, if any.
+        }
+
+        // Update function (already defined in the header)
+        void RainfallSensor::update()
+        {
+            // Example: Read a line from the UART sensor
+            std::string line = this->read_line();
+            if (!line.empty())
+            {
+                // Parse the string (example, adapt to your sensor data format)
+                float value = std::stof(line);
+                this->publish_state(value); // Send the value to ESPHome
+            }
         }
 
     } // namespace rainfall_sensor
