@@ -1,7 +1,6 @@
 #include "esphome.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/uart/uart.h"
-#include "esphome/components/delay/delay.h" // Include the Delay component
 
 namespace esphome
 {
@@ -15,10 +14,12 @@ namespace esphome
 
             void setup() override
             {
-                // Setup code (e.g., initialize UART, etc.)
+                // Register the tick for periodic updates (every 60 seconds)
+                App.register_tick([this]()
+                                  { this->update(); }, 60);
             }
 
-            void update() override
+            void update()
             {
                 // Get the data from the sensor
                 std::string line = read_line();
@@ -36,9 +37,6 @@ namespace esphome
 
                 // Publish the rainfall amount
                 this->publish_state(rainfall_value);
-
-                // Delay for the next update (e.g., update every 60 seconds)
-                delay(60000); // Delay in milliseconds (1 minute)
             }
 
             std::string read_line()

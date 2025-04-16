@@ -1,7 +1,6 @@
 #include "esphome.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/uart/uart.h"
-#include "esphome/components/delay/delay.h" // Include the Delay component
 
 namespace esphome
 {
