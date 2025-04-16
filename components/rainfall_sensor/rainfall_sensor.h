@@ -1,6 +1,9 @@
 #pragma once
 
 #include "esphome.h"
+#include "esphome/components/sensor/sensor.h"
+#include "esphome/components/uart/uart.h"
+#include "esphome/components/polling/polling.h"
 
 namespace esphome
 {
@@ -10,22 +13,22 @@ namespace esphome
         class RainfallSensor : public PollingComponent, public UARTDevice, public Sensor
         {
         public:
-            RainfallSensor(UARTComponent *parent) : UARTDevice(parent) {}
-
-            void setup() override
-            {
-                // Any initialization code for the sensor
-            }
+            explicit RainfallSensor(UARTComponent *parent) : UARTDevice(parent) {}
 
             void update() override
             {
-                std::string line = this->read_line();
-                if (!line.empty())
-                {
-                    // Example: convert the line to float and publish the state
-                    float value = std::stof(line);
-                    this->publish_state(value); // Send the data to ESPHome
-                }
+                // your update logic here
+            }
+
+            std::string read_line()
+            {
+                // Implement UART reading logic here
+            }
+
+            void publish_state(float value)
+            {
+                // Call the base class publish_state method to send data
+                Sensor::publish_state(value);
             }
         };
 
