@@ -1,28 +1,30 @@
 #include "esphome.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/uart/uart.h"
-#include "esphome/components/update_interval/update_interval.h"
+#include "esphome/components/delay/delay.h" // Include the Delay component
 
 namespace esphome
 {
     namespace rainfall_sensor
     {
 
-        class RainfallSensor : public UpdateIntervalComponent, public UARTDevice, public Sensor
+        class RainfallSensor : public UARTDevice, public Sensor
         {
         public:
             explicit RainfallSensor(UARTComponent *parent) : UARTDevice(parent) {}
 
             void setup() override
             {
-                // Perform any setup necessary (e.g., initialize UART, etc.)
+                // Setup code (e.g., initialize UART, etc.)
             }
 
             void update() override
             {
+                // Get the data from the sensor
                 std::string line = read_line();
                 float rainfall_value = 0.0;
 
+                // Try to convert the received data to float
                 try
                 {
                     rainfall_value = std::stof(line);
@@ -32,7 +34,11 @@ namespace esphome
                     rainfall_value = 0.0;
                 }
 
+                // Publish the rainfall amount
                 this->publish_state(rainfall_value);
+
+                // Delay for the next update (e.g., update every 60 seconds)
+                delay(60000); // Delay in milliseconds (1 minute)
             }
 
             std::string read_line()
