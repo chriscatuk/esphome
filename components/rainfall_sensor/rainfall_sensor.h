@@ -1,8 +1,6 @@
 #pragma once
 
 #include "esphome.h"
-#include "esphome/components/sensor/sensor.h"
-#include "esphome/components/uart/uart.h"
 
 namespace esphome
 {
@@ -16,24 +14,19 @@ namespace esphome
 
             void setup() override
             {
-                // Initialization code for the sensor
+                // Initialize hardware and UART setup
             }
 
             void update() override
             {
-                // Fetch sensor data and publish it
-                // For example, if you receive a string, you can read it like:
+                // Fetch data from the sensor via UART and process it
                 std::string line = this->read_line();
-                if (!line.empty())
+                if (line.length() > 0)
                 {
-                    float value = std::stof(line); // Convert the string to a float
-                    this->publish_state(value);    // Send the data to ESPHome
+                    // Parse the value (this is an example, adjust it to your sensor's data)
+                    float value = std::stof(line);
+                    this->publish_state(value); // Send the data to ESPHome
                 }
-            }
-
-            void loop() override
-            {
-                // Optional: If there's any other logic that needs to run in the loop, add it here
             }
         };
 
