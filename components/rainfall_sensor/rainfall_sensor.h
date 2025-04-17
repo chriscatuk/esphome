@@ -1,32 +1,26 @@
-#include "esphome.h"
-#include "esphome/components/sensor/sensor.h"
+#pragma once
+
+#include "esphome/core/component.h"
 #include "esphome/components/uart/uart.h"
+#include "esphome/components/sensor/sensor.h"
 
 namespace esphome
 {
     namespace rainfall_sensor
     {
 
-        class RainfallSensor : public esphome::PollingComponent, public UARTDevice, public Sensor
+        class RainfallSensor : public PollingComponent, public uart::UARTDevice
         {
         public:
-            explicit RainfallSensor(UARTComponent *parent) : UARTDevice(parent) {}
+            RainfallSensor() = default;
 
-            void update() override
-            {
-                // your update logic here
-            }
+            void setup() override;
+            void update() override;
 
-            std::string read_line()
-            {
-                // Implement UART reading logic here
-            }
+            void set_sensor(sensor::Sensor *sensor) { this->sensor_ = sensor; }
 
-            void publish_state(float value)
-            {
-                // Call the base class publish_state method to send data
-                Sensor::publish_state(value);
-            }
+        protected:
+            sensor::Sensor *sensor_{nullptr};
         };
 
     } // namespace rainfall_sensor
