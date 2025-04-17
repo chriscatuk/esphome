@@ -13,9 +13,11 @@ from esphome.const import (
     STATE_CLASS_TOTAL_INCREASING,
     STATE_CLASS_MEASUREMENT,
     UNIT_MILLIMETER,
-    UNIT_MILLIMETER_PER_HOUR,
     ICON_WATER,
 )
+
+# Not available in ESPHome, so define it manually:
+UNIT_MILLIMETER_PER_HOUR = "mm/h"
 
 CODEOWNERS = ["@chriscatuk"]
 
