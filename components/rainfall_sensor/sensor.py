@@ -1,7 +1,25 @@
+from esphome import pins
 import esphome.codegen as cg
 from esphome.components import sensor, uart
 import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_UART_ID
+
+CODEOWNERS = ["@chriscatuk"]
+
+MULTI_CONF = True
+
+DEPENDENCIES = ["uart"]
+AUTO_LOAD = ["sensor", "text_sensor"]
+
+CONF_REQUEST_INTERVAL = "request_interval"
+CONF_REQUEST_PIN = "request_pin"
+
+
+# Hack to prevent compile error due to ambiguity with lib namespace
+rainfall_sensor_ns = cg.esphome_ns.namespace("esphome::rainfall_sensor")
+RainfallSensor = rainfall_sensor_ns.class_(
+    "RainfallSensor", cg.Component, uart.UARTDevice
+)
 
 # Define the schema for your configuration.
 CONFIG_SCHEMA = cv.Schema(
