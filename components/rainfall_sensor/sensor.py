@@ -29,7 +29,6 @@ AUTO_LOAD = ["sensor", "text_sensor"]
 CONF_PRECIPITATION = "precipitation"
 CONF_PRECIPITATION_INTENSITY = "precipitation_intensity"
 
-# Hack to prevent compile error due to ambiguity with lib namespace
 rainfall_sensor_ns = cg.esphome_ns.namespace("rainfall_sensor")
 RainfallSensor = rainfall_sensor_ns.class_(
     "RainfallSensor", cg.Component, uart.UARTDevice
@@ -62,10 +61,6 @@ async def to_code(config):
 
     # Register the component (this makes it known to ESPHome).
     await cg.register_component(var, config)
-
-    # That line is only valid if your class (RainfallSensor) directly inherits from sensor.Sensor
-    # # Register the sensor itself (this makes it an actual sensor component in ESPHome).
-    # await sensor.register_sensor(var, config)
 
     # Retrieve the UART component from the configuration.
     uart_component = await cg.get_variable(config[CONF_UART_ID])
