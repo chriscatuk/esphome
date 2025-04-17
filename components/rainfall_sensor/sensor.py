@@ -19,6 +19,7 @@ CONFIG_SCHEMA = sensor.sensor_schema(
 ).extend(
     {
         cv.GenerateID(): cv.declare_id(RainfallSensor),
+        cv.Required(CONF_ID): cv.declare_id(RainfallSensor),
         cv.Required(CONF_UART_ID): cv.use_id(uart.UARTComponent),
     }
 )
