@@ -30,7 +30,7 @@ CONF_PRECIPITATION = "precipitation"
 CONF_PRECIPITATION_INTENSITY = "precipitation_intensity"
 
 # Hack to prevent compile error due to ambiguity with lib namespace
-rainfall_sensor_ns = cg.esphome_ns.namespace("esphome::rainfall_sensor")
+rainfall_sensor_ns = cg.esphome_ns.namespace("rainfall_sensor")
 RainfallSensor = rainfall_sensor_ns.class_(
     "RainfallSensor", cg.Component, uart.UARTDevice
 )
