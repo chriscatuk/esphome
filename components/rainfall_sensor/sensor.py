@@ -1,34 +1,28 @@
-from esphome.components import sensor
-from esphome.components import uart
-import esphome.config_validation as cv
-import esphome.codegen as cg
-from esphome.const import (
-    CONF_ID,
-    CONF_NAME,
-    UNIT_MILLIMETER,
-    ICON_WATER,
-    CONF_UART_ID,
-)
+from esphome import cg, uart, sensor
+from esphome.const import CONF_ID, CONF_UART_ID
 
-from . import rainfall_sensor_ns, RainfallSensor
-
-CONFIG_SCHEMA = sensor.sensor_schema(
-    unit_of_measurement=UNIT_MILLIMETER,
-    icon=ICON_WATER,
-    accuracy_decimals=2,
-).extend(
+# Define the schema for your configuration.
+CONFIG_SCHEMA = cv.Schema(
     {
-        cv.GenerateID(): cv.declare_id(RainfallSensor),
         cv.Required(CONF_ID): cv.declare_id(RainfallSensor),
         cv.Required(CONF_UART_ID): cv.use_id(uart.UARTComponent),
     }
 )
 
 
+# The async function to generate the code for this sensor.
 async def to_code(config):
+    # Create a new variable for the RainfallSensor.
     var = cg.new_Pvariable(config[CONF_ID])
+
+    # Register the component (this makes it known to ESPHome).
     await cg.register_component(var, config)
+
+    # Register the sensor itself (this makes it an actual sensor component in ESPHome).
     await sensor.register_sensor(var, config)
 
+    # Retrieve the UART component from the configuration.
     uart_component = await cg.get_variable(config[CONF_UART_ID])
+
+    # Register the UART device and associate it with the rainfall sensor.
     await uart.register_uart_device(var, uart_component)
