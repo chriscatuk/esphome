@@ -5,7 +5,6 @@ from esphome.const import (
     CONF_NAME,
     UNIT_MILLIMETER,
     ICON_WATER,
-    DEVICE_CLASS_RAINFALL,
 )
 from . import rainfall_sensor_ns, RainfallSensor
 
@@ -14,7 +13,7 @@ CONFIG_SCHEMA = sensor.sensor_schema(
     unit_of_measurement=UNIT_MILLIMETER,
     icon=ICON_WATER,
     accuracy_decimals=1,
-    device_class=DEVICE_CLASS_RAINFALL,
+    # device_class='rainfall',  # ❌ Not supported — REMOVE this
 ).extend(
     {
         cv.GenerateID(): cv.declare_id(RainfallSensor),
