@@ -15,8 +15,7 @@ AUTO_LOAD = ["sensor", "text_sensor"]
 CONF_REQUEST_INTERVAL = "request_interval"
 CONF_REQUEST_PIN = "request_pin"
 
-# rainfall_sensor_ns = cg.esphome_ns.namespace("rainfall_sensor")
-
-# RainfallSensor = rainfall_sensor_ns.class_(
-#     "RainfallSensor", cg.Component, uart.UARTDevice
-# )
+rainfall_sensor_ns = cg.esphome_ns.namespace("rainfall_sensor")
+RainfallSensor = rainfall_sensor_ns.class_(
+    "RainfallSensor", cg.PollingComponent, uart.UARTDevice, sensor.Sensor
+)
