@@ -37,7 +37,6 @@ RainfallSensor = rainfall_sensor_ns.class_(
 
 CONFIG_SCHEMA = cv.Schema(
     {
-        cv.Required(CONF_ID): cv.declare_id(RainfallSensor),
         cv.Required(CONF_UART_ID): cv.use_id(uart.UARTComponent),
         cv.Optional(CONF_PRECIPITATION): sensor.sensor_schema(
             unit_of_measurement=UNIT_MILLIMETER,
@@ -74,10 +73,14 @@ async def to_code(config):
     # Register the UART device and associate it with the rainfall sensor.
     await uart.register_uart_device(var, uart_component)
 
+    # If precipitation sensor is configured, create the sensor and link it to the RainfallSensor object
     if CONF_PRECIPITATION in config:
-        sens = await sensor.new_sensor(config[CONF_PRECIPITATION])
-        cg.add(var.set_precipitation_sensor(sens))
+        precipitation_sensor = await sensor.new_sensor(config[CONF_PRECIPITATION])
+        cg.add(var.set_precipitation_sensor(precipitation_sensor))
 
+    # If precipitation intensity sensor is configured, create the sensor and link it
     if CONF_PRECIPITATION_INTENSITY in config:
-        sens = await sensor.new_sensor(config[CONF_PRECIPITATION_INTENSITY])
-        cg.add(var.set_precipitation_intensity_sensor(sens))
+        precipitation_intensity_sensor = await sensor.new_sensor(
+            config[CONF_PRECIPITATION_INTENSITY]
+        )
+        cg.add(var.set_precipitation_intensity_sensor(precipitation_intensity_sensor))
