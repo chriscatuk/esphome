@@ -15,7 +15,9 @@ AUTO_LOAD = ["sensor", "text_sensor"]
 CONF_REQUEST_INTERVAL = "request_interval"
 CONF_REQUEST_PIN = "request_pin"
 
-rainfall_sensor_ns = cg.esphome_ns.namespace("rainfall_sensor")
+
+# Hack to prevent compile error due to ambiguity with lib namespace
+rainfall_sensor_ns = cg.esphome_ns.namespace("esphome::rainfall_sensor")
 RainfallSensor = rainfall_sensor_ns.class_(
-    "RainfallSensor", cg.PollingComponent, uart.UARTDevice, sensor.Sensor
+    "RainfallSensor", cg.Component, uart.UARTDevice
 )
