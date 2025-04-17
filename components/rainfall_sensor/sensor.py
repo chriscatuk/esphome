@@ -62,6 +62,10 @@ async def to_code(config):
     # Register the component (this makes it known to ESPHome).
     await cg.register_component(var, config)
 
+    # That line is only valid if your class (RainfallSensor) directly inherits from sensor.Sensor
+    # # Register the sensor itself (this makes it an actual sensor component in ESPHome).
+    # await sensor.register_sensor(var, config)
+
     # Retrieve the UART component from the configuration.
     uart_component = await cg.get_variable(config[CONF_UART_ID])
 
