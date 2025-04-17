@@ -58,7 +58,7 @@ CONFIG_SCHEMA = cv.Schema(
 
 async def to_code(config):
     # Create a new variable for the RainfallSensor.
-    var = cg.new_Pvariable(config[CONF_ID])
+    var = cg.new_Pvariable(config[CONF_UART_ID])
 
     # Register the component (this makes it known to ESPHome).
     await cg.register_component(var, config)
