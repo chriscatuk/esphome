@@ -1,4 +1,6 @@
-from esphome import cg, uart, sensor
+import esphome.codegen as cg
+from esphome.components import sensor, uart
+import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_UART_ID
 
 # Define the schema for your configuration.
@@ -7,7 +9,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Required(CONF_ID): cv.declare_id(RainfallSensor),
         cv.Required(CONF_UART_ID): cv.use_id(uart.UARTComponent),
     }
-)
+).extend(cv.COMPONENT_SCHEMA)
 
 
 # The async function to generate the code for this sensor.
