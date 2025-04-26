@@ -36,7 +36,7 @@ RainfallSensor = rainfall_sensor_ns.class_(
 
 CONFIG_SCHEMA = cv.Schema(
     {
-        cv.Required(CONF_UART_ID): cv.use_id(uart.UARTComponent),
+        cv.Optional(CONF_UART_ID): cv.use_id(uart.UARTComponent),
         cv.Optional(CONF_PRECIPITATION): sensor.sensor_schema(
             unit_of_measurement=UNIT_MILLIMETER,
             accuracy_decimals=2,
