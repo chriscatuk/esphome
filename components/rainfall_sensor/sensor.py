@@ -55,7 +55,7 @@ CONFIG_SCHEMA = cv.Schema(
 
 async def to_code(config):
     # Create a new variable for the RainfallSensor.
-    var = cg.new_Pvariable(config[CONF_UART_ID])
+    var = cg.new_Pvariable(config[CONF_ID])
 
     # Register the component (this makes it known to ESPHome).
     await cg.register_component(var, config)
@@ -64,10 +64,10 @@ async def to_code(config):
     # # Register the sensor itself (this makes it an actual sensor component in ESPHome).
     # await sensor.register_sensor(var, config)
 
-    # Retrieve the UART component from the configuration.
+    # Get the UART device
     uart_component = await cg.get_variable(config[CONF_UART_ID])
 
-    # Register the UART device and associate it with the rainfall sensor.
+    # Attach the UART device to your RainfallSensor
     await uart.register_uart_device(var, uart_component)
 
     # If precipitation sensor is configured, create the sensor and link it to the RainfallSensor object
