@@ -32,12 +32,19 @@ CONF_PRECIPITATION_INTENSITY = "precipitation_intensity"
 
 CONFIG_SCHEMA = cv.Schema(
     {
-        cv.Optional(CONF_UART_ID): cv.use_id(uart.UARTComponent),
+        cv.Required(CONF_UART_ID): cv.use_id(uart.UARTComponent),
         cv.Optional(CONF_PRECIPITATION): sensor.sensor_schema(
             unit_of_measurement=UNIT_MILLIMETER,
             accuracy_decimals=2,
             device_class=DEVICE_CLASS_PRECIPITATION,
             state_class=STATE_CLASS_TOTAL_INCREASING,
+            icon=ICON_WATER,
+        ),
+        cv.Optional(CONF_PRECIPITATION_INTENSITY): sensor.sensor_schema(
+            unit_of_measurement=UNIT_MILLIMETER_PER_HOUR,
+            accuracy_decimals=2,
+            device_class=DEVICE_CLASS_PRECIPITATION_INTENSITY,
+            state_class=STATE_CLASS_MEASUREMENT,
             icon=ICON_WATER,
         ),
     }
