@@ -16,7 +16,7 @@ from esphome.const import (
     ICON_WATER,
 )
 
-# Not available in ESPHome, so define it manually:
+# # Not available in ESPHome, so define it manually:
 # UNIT_MILLIMETER_PER_HOUR = "mm/h"
 
 # CODEOWNERS = ["@chriscatuk"]
@@ -29,9 +29,9 @@ from esphome.const import (
 # CONF_PRECIPITATION = "precipitation"
 # CONF_PRECIPITATION_INTENSITY = "precipitation_intensity"
 
-# CONFIG_SCHEMA = cv.Schema(
-#     {cv.Optional(CONF_UART_ID): cv.use_id(uart.UARTComponent)}
-# ).extend(cv.COMPONENT_SCHEMA)
+CONFIG_SCHEMA = cv.Schema(
+    {cv.Optional(CONF_UART_ID): cv.use_id(uart.UARTComponent)}
+).extend(cv.COMPONENT_SCHEMA)
 
 
 async def to_code(config):
