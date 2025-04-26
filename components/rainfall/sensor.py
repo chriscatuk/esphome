@@ -19,11 +19,11 @@ from esphome.const import (
 # # Not available in ESPHome, so define it manually:
 UNIT_MILLIMETER_PER_HOUR = "mm/h"
 
-# CODEOWNERS = ["@chriscatuk"]
+CODEOWNERS = ["@chriscatuk"]
 
-# MULTI_CONF = True
+MULTI_CONF = True
 
-# DEPENDENCIES = ["uart"]
+DEPENDENCIES = ["uart"]
 # AUTO_LOAD = ["sensor", "text_sensor"]
 
 # CONF_PRECIPITATION = "precipitation"
