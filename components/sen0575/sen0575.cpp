@@ -1,20 +1,20 @@
-#include "rainfall_sensor.h"
+#include "sen0575.h"
 #include "esphome/core/log.h"
 
 namespace esphome
 {
-    namespace rainfall_sensor
+    namespace sen0575
     {
 
-        static const char *const TAG = "rainfall_sensor";
+        static const char *const TAG = "sen0575";
 
-        void RainfallSensor::setup()
+        void Sen0575::setup()
         {
-            ESP_LOGCONFIG(TAG, "Setting up RainfallSensor...");
+            ESP_LOGCONFIG(TAG, "Setting up Sen0575Sensor...");
             // Initialize UART or sensor-specific logic
         }
 
-        void RainfallSensor::update()
+        void Sen0575::update()
         {
             // Example: Read one line from UART
             std::string line = this->read_line();

@@ -27,14 +27,12 @@ AUTO_LOAD = ["sensor", "text_sensor"]
 CONF_PRECIPITATION = "precipitation"
 CONF_PRECIPITATION_INTENSITY = "precipitation_intensity"
 
-rainfall_sensor_ns = cg.esphome_ns.namespace("rainfall_sensor")
-RainfallSensor = rainfall_sensor_ns.class_(
-    "RainfallSensor", cg.Component, uart.UARTDevice
-)
+sen0575_ns = cg.esphome_ns.namespace("sen0575")
+Sen0575 = sen0575_ns.class_("Sen0575", cg.Component, uart.UARTDevice)
 
 CONFIG_SCHEMA = cv.Schema(
     {
-        cv.GenerateID(CONF_ID): cv.declare_id(RainfallSensor),
+        cv.GenerateID(CONF_ID): cv.declare_id(Sen0575),
         cv.Required(CONF_UART_ID): cv.use_id(uart.UARTComponent),
         cv.Optional(CONF_PRECIPITATION): sensor.sensor_schema(
             unit_of_measurement=UNIT_MILLIMETER,
@@ -55,22 +53,22 @@ CONFIG_SCHEMA = cv.Schema(
 
 
 async def to_code(config):
-    # Create a new variable for the RainfallSensor.
+    # Create a new variable for the Sen0575.
     var = cg.new_Pvariable(config[CONF_ID])
 
     # Register the component (this makes it known to ESPHome).
     await cg.register_component(var, config)
 
-    # That line is only valid if your class (RainfallSensor) directly inherits from sensor.Sensor
+    # That line is only valid if your class (Sen0575) directly inherits from sensor.Sensor
     # # Register the sensor itself (this makes it an actual sensor component in ESPHome).
     # await sensor.register_sensor(var, config)
 
-    # Attach the UART device to your RainfallSensor
+    # Attach the UART device to your Sen0575
     await uart.register_uart_device(
         var, config
     )  # <-- pass full config, not just uart_id
 
-    # If precipitation sensor is configured, create the sensor and link it to the RainfallSensor object
+    # If precipitation sensor is configured, create the sensor and link it to the Sen0575 object
     if CONF_PRECIPITATION in config:
         precipitation_sensor = await sensor.new_sensor(config[CONF_PRECIPITATION])
         cg.add(var.set_precipitation_sensor(precipitation_sensor))

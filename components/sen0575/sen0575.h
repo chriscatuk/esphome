@@ -6,13 +6,13 @@
 
 namespace esphome
 {
-    namespace rainfall_sensor
+    namespace sen0575
     {
 
-        class RainfallSensor : public PollingComponent, public uart::UARTDevice
+        class Sen0575 : public PollingComponent, public uart::UARTDevice
         {
         public:
-            RainfallSensor() = default;
+            Sen0575() = default;
 
             void setup() override;
             void update() override;
@@ -23,5 +23,5 @@ namespace esphome
             sensor::Sensor *sensor_{nullptr};
         };
 
-    } // namespace rainfall_sensor
+    } // namespace sen0575
 } // namespace esphome
