@@ -17,7 +17,7 @@ from esphome.const import (
 )
 
 # # Not available in ESPHome, so define it manually:
-# UNIT_MILLIMETER_PER_HOUR = "mm/h"
+UNIT_MILLIMETER_PER_HOUR = "mm/h"
 
 # CODEOWNERS = ["@chriscatuk"]
 
