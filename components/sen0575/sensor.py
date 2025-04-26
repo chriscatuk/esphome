@@ -1,4 +1,3 @@
-from esphome import pins
 import esphome.codegen as cg
 from esphome.components import sensor, uart
 import esphome.config_validation as cv
@@ -35,7 +34,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.GenerateID(CONF_ID): cv.declare_id(Sen0575),
         cv.Required(CONF_UART_ID): cv.use_id(uart.UARTComponent),
         cv.Optional(CONF_PRECIPITATION): sensor.sensor_schema(
-            unit_of_measurement=UNIT_MILLIMETER,
+            unit_of_measurement=UNIT_MILLIMETER,  # default values
             accuracy_decimals=2,
             device_class=DEVICE_CLASS_PRECIPITATION,
             state_class=STATE_CLASS_TOTAL_INCREASING,
@@ -54,6 +53,18 @@ CONFIG_SCHEMA = cv.Schema(
 
 # turn the YAML configuration into C++
 async def to_code(config):
+    # Check if the units are correct
+    precip_unit = config[CONF_PRECIPITATION]["unit_of_measurement"]
+    intensity_unit = config[CONF_PRECIPITATION_INTENSITY]["unit_of_measurement"]
+    if precip_unit != UNIT_MILLIMETER:
+        raise cv.Invalid(
+            f"Invalid unit for {CONF_PRECIPITATION}: {precip_unit}. Expected {UNIT_MILLIMETER}"
+        )
+    if intensity_unit != UNIT_MILLIMETER_PER_HOUR:
+        raise cv.Invalid(
+            f"Invalid unit for {CONF_PRECIPITATION_INTENSITY}: {intensity_unit}. Expected {UNIT_MILLIMETER_PER_HOUR}"
+        )
+
     # Create a new variable for the Sen0575.
     my_sensor = cg.new_Pvariable(config[CONF_ID])
 
