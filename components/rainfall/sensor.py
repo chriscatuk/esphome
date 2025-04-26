@@ -23,14 +23,23 @@ CODEOWNERS = ["@chriscatuk"]
 
 MULTI_CONF = True
 
-# DEPENDENCIES = ["uart"]
-# AUTO_LOAD = ["sensor", "text_sensor"]
+DEPENDENCIES = ["uart"]
+AUTO_LOAD = ["sensor", "text_sensor"]
 
-# CONF_PRECIPITATION = "precipitation"
-# CONF_PRECIPITATION_INTENSITY = "precipitation_intensity"
+CONF_PRECIPITATION = "precipitation"
+CONF_PRECIPITATION_INTENSITY = "precipitation_intensity"
 
 CONFIG_SCHEMA = cv.Schema(
-    {cv.Optional(CONF_UART_ID): cv.use_id(uart.UARTComponent)}
+    {
+        cv.Optional(CONF_UART_ID): cv.use_id(uart.UARTComponent),
+        cv.Optional(CONF_PRECIPITATION): sensor.sensor_schema(
+            unit_of_measurement=UNIT_MILLIMETER,
+            accuracy_decimals=2,
+            device_class=DEVICE_CLASS_PRECIPITATION,
+            state_class=STATE_CLASS_TOTAL_INCREASING,
+            icon=ICON_WATER,
+        ),
+    }
 ).extend(cv.COMPONENT_SCHEMA)
 
 
