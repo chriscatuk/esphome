@@ -66,7 +66,9 @@ async def to_code(config):
     # await sensor.register_sensor(var, config)
 
     # Attach the UART device to your RainfallSensor
-    await uart.register_uart_device(var, config[CONF_UART_ID])
+    await uart.register_uart_device(
+        var, config
+    )  # <-- pass full config, not just uart_id
 
     # If precipitation sensor is configured, create the sensor and link it to the RainfallSensor object
     if CONF_PRECIPITATION in config:
