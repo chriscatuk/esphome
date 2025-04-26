@@ -55,28 +55,30 @@ CONFIG_SCHEMA = cv.Schema(
 # turn the YAML configuration into C++
 async def to_code(config):
     # Create a new variable for the Sen0575.
-    var = cg.new_Pvariable(config[CONF_ID])
+    my_sensor = cg.new_Pvariable(config[CONF_ID])
 
     # Register the component (this makes it known to ESPHome).
-    await cg.register_component(var, config)
+    await cg.register_component(my_sensor, config)
 
     # That line is only valid if your class (Sen0575) directly inherits from sensor.Sensor
     # # Register the sensor itself (this makes it an actual sensor component in ESPHome).
-    # await sensor.register_sensor(var, config)
+    # await sensor.register_sensor(my_sensor, config)
 
     # Attach the UART device to your Sen0575
     await uart.register_uart_device(
-        var, config
+        my_sensor, config
     )  # <-- pass full config, not just uart_id
 
     # If precipitation sensor is configured, create the sensor and link it to the Sen0575 object
     if CONF_PRECIPITATION in config:
         precipitation_sensor = await sensor.new_sensor(config[CONF_PRECIPITATION])
-        cg.add(var.set_precipitation_sensor(precipitation_sensor))
+        cg.add(my_sensor.set_precipitation_sensor(precipitation_sensor))
 
     # If precipitation intensity sensor is configured, create the sensor and link it
     if CONF_PRECIPITATION_INTENSITY in config:
         precipitation_intensity_sensor = await sensor.new_sensor(
             config[CONF_PRECIPITATION_INTENSITY]
         )
-        cg.add(var.set_precipitation_intensity_sensor(precipitation_intensity_sensor))
+        cg.add(
+            my_sensor.set_precipitation_intensity_sensor(precipitation_intensity_sensor)
+        )
