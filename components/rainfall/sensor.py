@@ -21,7 +21,7 @@ UNIT_MILLIMETER_PER_HOUR = "mm/h"
 
 CODEOWNERS = ["@chriscatuk"]
 
-# MULTI_CONF = True
+MULTI_CONF = True
 
 # DEPENDENCIES = ["uart"]
 # AUTO_LOAD = ["sensor", "text_sensor"]
