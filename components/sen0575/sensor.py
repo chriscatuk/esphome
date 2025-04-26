@@ -52,6 +52,7 @@ CONFIG_SCHEMA = cv.Schema(
 ).extend(cv.COMPONENT_SCHEMA)
 
 
+# turn the YAML configuration into C++
 async def to_code(config):
     # Create a new variable for the Sen0575.
     var = cg.new_Pvariable(config[CONF_ID])
