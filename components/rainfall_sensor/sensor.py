@@ -65,11 +65,8 @@ async def to_code(config):
     # # Register the sensor itself (this makes it an actual sensor component in ESPHome).
     # await sensor.register_sensor(var, config)
 
-    # Get the UART device
-    uart_component = await cg.get_variable(config[CONF_UART_ID])
-
     # Attach the UART device to your RainfallSensor
-    await uart.register_uart_device(var, uart_component)
+    await uart.register_uart_device(var, config[CONF_UART_ID])
 
     # If precipitation sensor is configured, create the sensor and link it to the RainfallSensor object
     if CONF_PRECIPITATION in config:
