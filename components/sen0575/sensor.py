@@ -55,7 +55,7 @@ CONFIG_SCHEMA = cv.Schema(
 async def to_code(config):
 
     # add arduino framework
-    cg.add_platformio_option("framework", "arduino, espidf")
+    # cg.add_platformio_option("framework", "arduino, espidf")
 
     # Check if the units are correct
     precip_unit = config[CONF_PRECIPITATION]["unit_of_measurement"]
