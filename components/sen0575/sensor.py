@@ -53,6 +53,10 @@ CONFIG_SCHEMA = cv.Schema(
 
 # turn the YAML configuration into C++
 async def to_code(config):
+
+    # add arduino framework
+    cg.add_platformio_option("framework", "arduino, espidf")
+
     # Check if the units are correct
     precip_unit = config[CONF_PRECIPITATION]["unit_of_measurement"]
     intensity_unit = config[CONF_PRECIPITATION_INTENSITY]["unit_of_measurement"]
