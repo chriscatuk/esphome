@@ -23,16 +23,21 @@ namespace esphome
 
             uint8_t incoming_byte = 0;
 
-            if (uart_->available())
+            if (available())
             {
-                incoming_byte = uart_->read();
+                incoming_byte = read();
 
                 // Parse data from the incoming byte
                 if (parse_data(incoming_byte))
                 {
-                    // Update the sensor values and publish
-                    publish_state(total_rainfall_);
-                    publish_state(precipitation_intensity_);
+                    if (precipitation_sensor_ != nullptr)
+                    {
+                        precipitation_sensor_->publish_state(total_rainfall_);
+                    }
+                    if (precipitation_intensity_sensor_ != nullptr)
+                    {
+                        precipitation_intensity_sensor_->publish_state(precipitation_intensity_);
+                    }
                 }
             }
         }
