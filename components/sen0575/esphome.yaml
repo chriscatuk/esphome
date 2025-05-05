@@ -71,6 +71,7 @@ uart:
   tx_pin: GPIO17
   rx_pin: GPIO16
   baud_rate: 9600  # Adjust the baud rate according to the sensor's documentation
+  stop_bits: 1
 
 # Built-in button on GPIO9
 binary_sensor:
