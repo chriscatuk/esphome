@@ -22,8 +22,8 @@ namespace esphome
         protected:
             bool read_data_(uint8_t *data);
 
-            sensor::Sensor *precipitation_sensor{nullptr};
-            sensor::Sensor *precipitation_intensity_sensor{nullptr};
+            sensor::Sensor *precipitation_sensor_{nullptr};
+            sensor::Sensor *precipitation_intensity_sensor_{nullptr};
         };
 
     } // namespace dht12
