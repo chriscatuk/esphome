@@ -46,8 +46,8 @@ namespace esphome
         }
         void Sen0575::dump_config()
         {
-            ESP_LOGD(TAG, "SEN0575:");
-            LOG_I2C_DEVICE(this);
+            ESP_LOGD(TAG, "SEN0575:");                  // Optional debug log
+            ESP_LOGCONFIG(TAG, "Sen0575 UART sensor:"); // Main config log
             if (this->is_failed())
             {
                 ESP_LOGE(TAG, "Communication with SEN0575 failed!");

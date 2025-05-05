@@ -109,7 +109,7 @@ font:
 display:
   - platform: ssd1306_i2c
     model: "SSD1306 128X64"
-    reset_pin: GPIO15
+    # reset_pin: GPIO15 # WARNING GPIO15 is a strapping PIN and should only be used for I/O with care.
     address: 0x3C
     lambda: |-
       // it.print(0, 0, id(roboto_15), "Hello World!");
