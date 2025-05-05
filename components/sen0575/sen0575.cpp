@@ -30,6 +30,8 @@ namespace esphome
                 // Parse data from the incoming byte
                 if (parse_data(incoming_byte))
                 {
+                    ESP_LOGV(TAG, "total_rainfall_: %f", total_rainfall_);
+                    ESP_LOGV(TAG, "precipitation_intensity_: %f", precipitation_intensity_);
                     if (precipitation_sensor_ != nullptr)
                     {
                         precipitation_sensor_->publish_state(total_rainfall_);
