@@ -58,11 +58,12 @@ namespace esphome
         float Sen0575::get_setup_priority() const { return setup_priority::DATA; }
         bool Sen0575::read_data_(uint8_t *data)
         {
-            if (!this->read_bytes(0, data, 5))
+            if (this->available() < 5)
             {
-                ESP_LOGW(TAG, "Updating SEN0575 failed!");
+                ESP_LOGW(TAG, "Not enough data available from SEN0575");
                 return false;
             }
+            this->read_array(data, 5);
 
             uint8_t checksum = data[0] + data[1] + data[2] + data[3];
             if (data[4] != checksum)
