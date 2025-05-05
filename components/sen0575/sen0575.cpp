@@ -8,6 +8,9 @@ namespace esphome
 
         static const char *const TAG = "sen0575";
 
+        // Constructor
+        Sen0575::Sen0575(uart::UARTComponent *parent) : PollingComponent(1000), UARTDevice(parent) {}
+
         // `setup()` is where you can initialize components if necessary
         void Sen0575::setup()
         {

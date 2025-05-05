@@ -13,7 +13,7 @@ namespace esphome
         class Sen0575 : public PollingComponent, public uart::UARTDevice
         {
         public:
-            Sen0575(UARTComponent *uart) : PollingComponent(1000), uart_(uart) {}
+            Sen0575(uart::UARTComponent *parent);
 
             void setup() override;
             void update() override; // Declare the update method here
@@ -31,6 +31,10 @@ namespace esphome
 
         protected:
             UARTComponent *uart_;
+
+            Sensor *total_rainfall_sensor_{nullptr};
+            Sensor *intensity_sensor_{nullptr};
+
             float total_rainfall_ = 0.0;
             float precipitation_intensity_ = 0.0;
 
