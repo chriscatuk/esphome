@@ -36,5 +36,9 @@ namespace esphome
             LOG_SENSOR("  ", "Precipitation Intensity", this->precipitation_intensity_sensor_);
         }
 
+        float Sen0575::get_setup_priority() const
+        {
+            return setup_priority::DATA;
+        }
     } // namespace sen0575
 } // namespace esphome
