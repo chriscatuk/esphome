@@ -21,7 +21,7 @@ namespace esphome
             void set_total_rainfall(float rainfall) { total_rainfall_ = rainfall; }
             void set_precipitation_intensity(float intensity) { precipitation_intensity_ = intensity; }
             float get_total_rainfall() { return total_rainfall_; }
-            float get_precipitation_intensity() { return recipitation_intensity_; }
+            float get_precipitation_intensity() { return precipitation_intensity_; }
 
             void dump_config() override;
             float get_setup_priority() const override;
