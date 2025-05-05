@@ -11,6 +11,7 @@ namespace esphome
 
         class Sen0575 : public PollingComponent, public uart::UARTDevice
         {
+        public:
             void setup() override;
             void dump_config() override;
             float get_setup_priority() const override;
