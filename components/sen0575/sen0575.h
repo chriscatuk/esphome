@@ -27,5 +27,10 @@ namespace esphome
             sensor::Sensor *precipitation_intensity_sensor_{nullptr};
         };
 
+        float Sen0575::get_setup_priority() const
+        {
+            return setup_priority::DATA;
+        }
+
     } // namespace dht12
 } // namespace esphome
