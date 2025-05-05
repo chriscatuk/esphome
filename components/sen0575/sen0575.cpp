@@ -8,72 +8,33 @@ namespace esphome
 
         static const char *const TAG = "sen0575";
 
-        void Sen0575::update()
-        {
-            uint8_t data[5];
-            if (!this->read_data_(data))
-            {
-                this->status_set_warning();
-                return;
-            }
-            const uint16_t raw_temperature = uint16_t(data[2]) * 10 + (data[3] & 0x7F);
-            float temperature = raw_temperature / 10.0f;
-            if ((data[3] & 0x80) != 0)
-            {
-                // negative
-                temperature *= -1;
-            }
-
-            const uint16_t raw_humidity = uint16_t(data[0]) * 10 + data[1];
-            float humidity = raw_humidity / 10.0f;
-
-            ESP_LOGD(TAG, "Got temperature=%.2f°C humidity=%.2f%%", temperature, humidity);
-            if (this->temperature_sensor_ != nullptr)
-                this->temperature_sensor_->publish_state(temperature);
-            if (this->humidity_sensor_ != nullptr)
-                this->humidity_sensor_->publish_state(humidity);
-            this->status_clear_warning();
-        }
         void Sen0575::setup()
         {
-            ESP_LOGCONFIG(TAG, "Setting up SEN0575...");
-            uint8_t data[5];
-            if (!this->read_data_(data))
-            {
-                this->mark_failed();
-                return;
-            }
+            ESP_LOGCONFIG(TAG, "Setting up SEN0575 Rainfall Sensor...");
+            // Add any required initialization for the sensor here.
         }
+
+        void Sen0575::update()
+        {
+            ESP_LOGD(TAG, "Polling SEN0575 sensor...");
+
+            // Simulate or retrieve precipitation data
+            float precipitation = 0.1f;           // mm
+            float precipitation_intensity = 0.5f; // mm/h
+
+            if (this->precipitation_sensor_ != nullptr)
+                this->precipitation_sensor_->publish_state(precipitation);
+
+            if (this->precipitation_intensity_sensor_ != nullptr)
+                this->precipitation_intensity_sensor_->publish_state(precipitation_intensity);
+        }
+
         void Sen0575::dump_config()
         {
-            ESP_LOGD(TAG, "SEN0575:");                  // Optional debug log
-            ESP_LOGCONFIG(TAG, "Sen0575 UART sensor:"); // Main config log
-            if (this->is_failed())
-            {
-                ESP_LOGE(TAG, "Communication with SEN0575 failed!");
-            }
-            LOG_SENSOR("  ", "Temperature", this->temperature_sensor_);
-            LOG_SENSOR("  ", "Humidity", this->humidity_sensor_);
-        }
-        float Sen0575::get_setup_priority() const { return setup_priority::DATA; }
-        bool Sen0575::read_data_(uint8_t *data)
-        {
-            if (this->available() < 5)
-            {
-                ESP_LOGW(TAG, "Not enough data available from SEN0575");
-                return false;
-            }
-            this->read_array(data, 5);
-
-            uint8_t checksum = data[0] + data[1] + data[2] + data[3];
-            if (data[4] != checksum)
-            {
-                ESP_LOGW(TAG, "SEN0575 Checksum invalid!");
-                return false;
-            }
-
-            return true;
+            ESP_LOGCONFIG(TAG, "SEN0575:");
+            LOG_SENSOR("  ", "Precipitation", this->precipitation_sensor_);
+            LOG_SENSOR("  ", "Precipitation Intensity", this->precipitation_intensity_sensor_);
         }
 
-    } // namespace rainfall_sensor
+    } // namespace sen0575
 } // namespace esphome
