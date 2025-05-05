@@ -133,9 +133,6 @@ namespace esphome
             sensor::Sensor *precipitation_intensity_sensor_{nullptr};
 
         private:
-            int _dePin;
-            uint8_t _mode;
-
             /**
              * @fn getPidVid
              * @brief  Get VID and PID

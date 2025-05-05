@@ -12,7 +12,6 @@ namespace esphome
         void Sen0575::setup()
         {
             ESP_LOGCONFIG(TAG, "Setting up SEN0575 Rainfall Sensor...");
-            _mode = mode;
             pid = 0;
             vid = 0;
         }
