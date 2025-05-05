@@ -1,0 +1,162 @@
+esphome:
+  name: "rain-gauge"
+  friendly_name: Rain Gauge
+  # on_boot:
+  #   then:
+  #     - script.execute: consider_deep_sleep
+
+esp32:
+  board: esp32-c6-devkitc-1
+  flash_size: 8MB
+  variant: esp32c6
+  framework:
+    type: esp-idf
+    # version: "5.3.1" # https://github.com/espressif/esp-idf/releases
+    # platform_version: 6.9.0 # https://github.com/platformio/platform-espressif32/releases
+    sdkconfig_options:
+      CONFIG_ESPTOOLPY_FLASHSIZE_8MB: y
+
+
+external_components:
+  - source: github://chriscatuk/esphome@raingauge
+    components: [ sen0575 ]
+    refresh: 0s
+  #  https://github.com/lboue/esphome/blob/adc_oneshot/esphome/components/adc
+  # - source: github://lboue/esphome@adc_oneshot
+  #   components: [ adc ]
+  # - source: github://esphome/esphome@dev
+  #   #refresh: 1min
+  #   components: [ htu21d ]
+
+# Enable logging
+logger:
+  level: INFO # VERBOSE
+
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "xxxxxx"
+
+ota:
+  - platform: esphome
+    password: "xxxxxx"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  # use_address: 192.168.0.1
+  # fast_connect: true
+  # output_power: 16dB # Uncomment if you have unstable WiFi, this reduces power drew by the WiFi chip
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "ESP32 Fallback Hotspot"
+    password: "xxxxxx"
+
+
+captive_portal:
+
+deep_sleep:
+  id: deep_sleep_1
+  sleep_duration: 10min
+
+# Enable Web Server for easy debugging (optional)
+web_server:
+  port: 80
+  version: 3
+
+uart:
+  id: uart_bus
+  tx_pin: GPIO17
+  rx_pin: GPIO16
+  baud_rate: 9600  # Adjust the baud rate according to the sensor's documentation
+
+# Built-in button on GPIO9
+binary_sensor:
+#  - platform: gpio
+#    pin:
+#      number: GPIO9
+#      mode: INPUT_PULLUP
+#      inverted: true
+#    name: "C6 Button"
+#    filters:
+#      - delayed_on: 10ms
+#      - delayed_off: 10ms
+  # Will only pick up a value if this device is configured in Home Assistant > Integrations
+  # If the device isn't configured, or Home Assistant is offline, it'll default to false
+  - platform: homeassistant
+    id: prevent_deep_sleep
+    entity_id: input_boolean.prevent_deep_sleep
+
+#light:
+#  - platform: monochromatic
+#    output: led_output
+#    name: "C6 LED"
+
+# Display configuration entry
+i2c:
+  sda: GPIO06
+  scl: GPIO07
+
+# Various ways to configure fonts
+font:
+    # gfonts://family[@weight]
+  - file: "gfonts://Roboto"
+    id: roboto_15
+    size: 15
+
+display:
+  - platform: ssd1306_i2c
+    model: "SSD1306 128X64"
+    # reset_pin: GPIO15 # WARNING GPIO15 is a strapping PIN and should only be used for I/O with care.
+    address: 0x3C
+    lambda: |-
+      // it.print(0, 0, id(roboto_15), "Hello World!");
+      it.printf(0, 0, id(roboto_15), "%.1f \xC2\xB0 C", id(temperature).state);
+      it.printf(0, 20, id(roboto_15), "%.1f %%", id(humidity).state);
+
+      // Draw a circle in the middle of the display
+      // it.filled_circle(it.get_width() / 2, it.get_height() / 2 + 10, 20);
+
+# Wi-Fi signal strength sensor
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal"
+    update_interval: 5s
+  - platform: uptime
+    name: "Uptime"
+  - platform: dht
+    pin: 10
+    model: DHT22
+    temperature:
+      id: temperature
+      name: "System Temperature"
+    humidity:
+      id: humidity
+      name: "System Humidity"
+    update_interval: 60s
+  - platform: sen0575
+    uart_id: uart_bus
+    precipitation:
+      name: "Rainfall Total"
+      unit_of_measurement: "mm"
+      accuracy_decimals: 2
+    precipitation_intensity:
+      name: "Rainfall Intensity"
+      unit_of_measurement: "mm/h"
+      accuracy_decimals: 2
+
+script:
+  - id: consider_deep_sleep
+    mode: queued
+    then:
+      - delay: 30s
+      - if:
+          condition:
+            binary_sensor.is_on: prevent_deep_sleep
+          then:
+            - logger.log: 'Skipping sleep, per prevent_deep_sleep'
+          else:
+            - deep_sleep.enter: deep_sleep_1
+      - script.execute: consider_deep_sleep
