@@ -16,14 +16,14 @@ namespace esphome
             float get_setup_priority() const override;
             void update() override;
 
-            void set_temperature_sensor(sensor::Sensor *temperature_sensor) { temperature_sensor_ = temperature_sensor; }
-            void set_humidity_sensor(sensor::Sensor *humidity_sensor) { humidity_sensor_ = humidity_sensor; }
+            void set_precipitation_sensor(sensor::Sensor *precipitation_sensor) { precipitation_sensor_ = precipitation_sensor; }
+            void set_precipitation_intensity_sensor(sensor::Sensor *precipitation_intensity_sensor) { precipitation_intensity_sensor_ = precipitation_intensity_sensor; }
 
         protected:
             bool read_data_(uint8_t *data);
 
-            sensor::Sensor *temperature_sensor_{nullptr};
-            sensor::Sensor *humidity_sensor_{nullptr};
+            sensor::Sensor *precipitation_sensor{nullptr};
+            sensor::Sensor *precipitation_intensity_sensor{nullptr};
         };
 
     } // namespace dht12
