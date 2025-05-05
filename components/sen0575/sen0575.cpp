@@ -19,7 +19,7 @@ namespace esphome
         // `update()` will be called every `PollingComponent` interval
         void Sen0575::update()
         {
-            ESP_LOGI(TAG, "Firmware version: %s", getFirmwareVersion());
+            // ESP_LOGI(TAG, "Firmware version: %s", getFirmwareVersion());
 
             ESP_LOGD(TAG, "Polling SEN0575 sensor...");
 
