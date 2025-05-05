@@ -18,7 +18,7 @@ esp32:
 
 
 external_components:
-  - source: github://chriscatuk/esphome@raingauge
+  - source: github://chriscatuk/esphome@raingauge_functions
     components: [ sen0575 ]
     refresh: 0s
   #  https://github.com/lboue/esphome/blob/adc_oneshot/esphome/components/adc
